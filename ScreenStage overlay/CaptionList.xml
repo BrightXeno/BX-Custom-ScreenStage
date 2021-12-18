@@ -1,0 +1,72 @@
+<ActorFrame><children>
+
+	<Layer
+		Type = "Quad"
+		OnCommand="%function(self)
+			BX_SongCaptions = {
+			-- Elements in each item
+			--[[
+				Song title to check (Or part of it if it isn't showing up with the whole title)
+				Step Artist to check
+				Caption
+				Tip Speaker [Format: Speaker = *Who is saying the Caption*]
+				Color [Table of three elements, RGB]
+				Dangerous = *is the file dangerous? uses true or false?*
+			]]
+			{'Acquire' , 'BrightXeno' , 'You know Kiratto PriChan isn\'t until sunday, right? You don\'t have to smash the TV to get them to show up'},
+			{'Acquire' , 'I WANT PRICHAN!!!1!!' , 'Our sparkling channel is now On Air!', Speaker = 'Mirai & Emo', Color = {1,.75,1}},
+			{'DokiPipo Emotion' , 'BrightXeno' , 'Rina Chan Board says [Nico Nii!]', Speaker = 'Rina Tennoji', Color = {1.25,1.25,1.25}},
+			{'Snow Halation' , 'BrightXeno' , 'Todokete setsuna sa ni wa\nNamae wo tsukeyou ka \'\'Snow halation\'\'', Color = {0,1,1}},
+			
+			-- Mods Boot Camp 3
+			{'HP 1' , 'TaroNuke' , 'I won\'t die in one hit - not this time!', Speaker = 'Chan', Color = {1,0,0}},
+			{'Ayakashi Kakushi' , 'TaroNuke' , 'Ah, the Ayakashi Saigyou is in full bloom tonight', Speaker = 'Yukari', Color = {.65,0,.65}},
+			{'Raiko Thunder Beat' , 'TaroNuke' , 'Can you keep the beat?', Speaker = 'Raiko', Color = {1,0,.0}},
+			{'Kusare gedou to chocolate' , 'TaroNuke' , 'This Rotten Heresy ends here!', Speaker = 'Kaworu', Color = {.45,0,.45}},
+			{'Usatei' , 'Daikyi vs TaroNuke' , 'Unlike my superior, I\'m a rabbit of -good- fortune!', Speaker = 'Tewi', Color = {1,.75,1}},
+			{'Fafnir' , 'TaroNuke' , 'No more faffing around.', Speaker = 'Pandora', Color = {0.35,0,0.35}},
+			{'Sailing Force' , 'Daikyi' , 'I\'ll drag you out to sea if I have to.', Speaker = 'Dai', Color = {1,1,1}},
+			{'Kanade' , 'TaroNuke vs. Daikyi' , 'The mods will be delivered at super-super-lightspeed! Think you can keep up?', Speaker = 'Condor', Color = {1,.85,1}},
+			{'TRIGGER' , 'TaroNuke' , 'Let\'s PARTY! Ready to get LOUD?', Speaker = 'Pinkie & Vinyl', Color = {1,0,1}},
+			{'JUGGLE' , 'TaroNuke' , '(I\'ve been bouncing this ball for years now... Let\'s see how *you* like it!)', Speaker = 'A Bumpie', Color = {.75,.75,0}},
+			{'Voltex taisou daiichi' , 'Daikyi' , 'Let\'s do some morning stretches!', Speaker = 'Kyi', Color = {1,.65,.25}},
+			{'Deadball de Homerun' , 'TaroNuke' , 'Let\'s see you hit a home run with THIS!', Speaker = 'Princess Mimi', Color = {1,.8,1}},
+			{'citrus' , 'Daikyi' , 'Orange you glad you get to play my Orangement of notes?', Speaker = 'Seagull Overwing', Color = {1,.5,0}},
+			{'HYMN' , 'TaroNuke' , 'Let\'s all pray to Luculent together! This\'ll be fun!', Speaker = 'LAER', Color = {1,1,.5}},
+			{'Nishinippori no odori' , 'TaroNuke' , 'My mods are perfectly challenging!! Not easy at all!!', Speaker = 'Nitori', Color = {.25,1,.25}},
+			{'dreamin\' of u' , 'Daikyi' , 'I hope Chan is okay... I think about him a lot.', Speaker = 'Ashe', Color = {.25,.25,.75}},
+			{'Night of knights' , 'TaroNuke' , 'You can run but you can\'t hide. This night will last forever.', Speaker = 'Sakuya', Color = {.75,.75,.75}},
+			{'Hana no motorenga' , 'Daikyi' , 'I\'ve been thinking... you have the makings of a good ghost.', Speaker = 'Yuyuko', Color = {.5,.5,1}},
+			{'#FairyJoke #SDVX_Edit' , 'TaroNuke vs. Daikyi' , 'Eye\'m the strongest! And that\'s no joke!!', Speaker = 'Cirno', Color = {.75,1,1}},
+			{'Got more raves?' , 'TaroNuke' , 'Groove Master? I don\'t think so!', Speaker = 'Ayaze', Color = {1,.25,0}},
+			{'Vigor' , 'halcyoniix' , 'I NEVER take L\'s!', Speaker = 'Kaden', Color = {1,0,0}},
+			{'Le Fruit Defendu' , 'Daikyi' , 'It is time for you to defend yourself!', Speaker = 'Manesh', Color = {.5,.5,.5}},
+			{'Junk Mania' , 'halcyoniix' , 'hey! you look solid.\ntoo bad I *hate* solid people.\nconfused? you should be.', Speaker = 'Tac', Color = {1,.75,.35}},
+			{'Gorgetech' , 'TaroNuke' , 'My techniques will bury you.', Speaker = 'Imhostep', Color = {1,.75,0}},
+			{'Dyscontrolled Galaxy' , 'TaroNuke' , 'I\'ve lost control...', Speaker = 'WinDEU'},
+			{'Nyan Cat' , 'TaroNuke' , 'I\'m relevant again! In... What year is it today??', Speaker = 'Neko', Color = {1,.75,1}},
+			{'Kanashibari no ai wo' , 'TaroNuke' , 'A fated encounter, perhaps?', Speaker = 'Alice', Color = {.75,.25,0}},
+			{'Random Box' , 'TaroNuke' , 'What\'s in the box? Nobody knows!', Speaker = 'Discord', Color = {.85,.85,.85}},
+			{'Goodbye' , 'TaroNuke' , 'Say Goodbye-bye to your Planet!', Speaker = 'Ulluriaq'},
+			{'Destroy' , 'halcyoniix' , 'My Destructive power is unmatched.', Speaker = 'Tenshi', Color = {.25,.5,1}},
+			{'Koi hadou?' , 'TaroNuke' , 'What does this button do? *inhales*', Speaker = 'Ama-tan', Color = {.65,.65,.65}},
+			{'Made In Love' , 'Daikyi' , 'Enjoy!', Speaker = 'Oskari', Color = {1,.5,.15}},
+			{'C18H27NO3' , 'Daikyi' , 'Hey buddy. You\'re in the way.', Speaker = 'Exschwasion', Color = {.75,0,0}},
+			{'Cloud 9' , 'halcyoniix' , 'You want a fight? I\'ll give you a fight! Just who the hell do you think we are!?', Speaker = 'Kiyonari', Color = {0,1,1}},
+			{'Mother Ship' , 'TaroNuke' , 'Play the five tones~!', Speaker = 'Nue', Color = {.85,.3,.3}},
+			{'chan Hi Tech' , 'TaroNuke' , 'It\'s me! Your hi-tech younger sister!', Speaker = 'SHAME', Color = {.25,.5,.25}},
+			{'Dadadadadadadadadada' , 'Daikyi' , 'µ¬±§ª¦±¶!!', Speaker = 'Mars', Color = {.75,0,.75}},
+			{'This is the Happiness and Peace of Mind Committee.' , 'TaroNuke' , 'Nitori, that was *still* too easy! Let me show you how it\'s done!', Speaker = 'Mech-Ama', Color = {.85,0,.85}},
+			{'Planeta Journey' , 'halcyoniix' , 'I wonder what planets I\'ll visit today...', Speaker = 'Cuphea', Color = {.65,0,.65}},
+			{'snow motion' , 'Taro vs. Puuro' , 'Ready to shred?? >:3', Speaker = 'Makoto', Color = {.5,1,1}},
+			{'Dark Matter' , 'Taro & Puuro' , 'Are you wanna die?', Speaker = 'Karhis', Color = {.45,0,.45}},
+			{'Oriental Mythology Medley' , 'Dai^Hal^Taro' , 'I\'ll show how it feels to be TRULY helpless.', Speaker = 'Yin Bao', Color = {.35,.35,.35}},
+			{'iLLness LiLin' , 'TaroNuke vs. Daikyi' , 'There is nothing here for you. Move along.', Speaker = 'SCOLD', Color = {1,.85,1}},
+			{'We Are The Scarlet' , 'TaroNuke' , 'I\'d think twice before messing with the Scarlet Devil Mansion crew!', Speaker = 'Team Scarlet', Color = {1,.14,0}},
+			{'Dopamine' , 'TaroNuke' , 'Ah, living dangerously I see? Bold of you to invite me along.', Speaker = 'Reisen', Color = {.65,.35,.65}},
+			
+			}
+		end"
+	/>
+
+</children></ActorFrame>

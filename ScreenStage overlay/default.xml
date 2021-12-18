@@ -1,0 +1,337 @@
+<ActorFrame><children>
+	<Actor File="easing.xml" />
+	<Actor File="CaptionList.xml" />
+	
+	<Actor
+		File="../ScreenWithMenuElements underlay"
+		OnCommand="%function(self)
+		
+			local CurSong = GAMESTATE:GetCurrentSong()
+			local CurSteps = GAMESTATE:GetCurrentSteps(0)
+			BXStage_Diff  = CurSteps:GetMeter()
+			BX_StageScreen_Played = false
+			if CurSong:GetBannerPath() then
+				BXEvalBanner  = CurSong:GetBannerPath()
+				Trace('Hey I Got the Banner')
+			else
+				BXEvalBanner  = ''
+				Trace('Hey I Got No Banner')
+			end
+			
+			if CurSong:GetBackgroundPath() then
+				BX_LoadBackground = CurSong:GetBackgroundPath()
+				Trace('Hey I Got the Background')
+			else
+				Trace('Hey I Got No Background')
+			end
+			
+			-- SONG TIPS AND TIDBITS
+			
+			BX_LoadTipSpeaker = ''
+			BX_LoadTipString = ''
+			BXStage_UseColor = ''
+			BXStage_IsDangerous = false
+			
+			for i,v in pairs(BX_SongCaptions) do
+				if (CurSong and string.find( CurSong:GetDisplayFullTitle(), BX_SongCaptions[i][1] ))
+				and (CurSteps and CurSteps:GetDescription() == BX_SongCaptions[i][2]) then
+					BX_LoadTipString = v[3]
+					
+					if v.Speaker then
+						BX_LoadTipSpeaker = v.Speaker
+					end
+					if v.Color then
+						BXStage_UseColor = v.Color
+					end
+					if v.Dangerous == true then
+						BXStage_IsDangerous = true
+					end
+					
+					break
+				end
+			end
+			
+			if	BXStage_IsDangerous == true or
+			   (BXStage_IsDangerous == false and BXStage_Diff >= 17) then
+			   
+				BXStage_IsDangerous = true
+				
+				if BXStage_UseColor == '' then
+					BXStage_UseColor = {2,0,0}
+				end
+				
+			end
+			
+			
+			print(BX_CheckingFPS)
+		end"
+	/>
+	
+	<Actor
+		Type="Quad"
+		OnCommand="%function(self)
+		-- For the Custom Life Graph if the theme supports it
+			BX_SaltyResets = 0
+			BX_CurCustomLife = {0.5, 0.5}
+			BX_DispCustomLife = {0.5, 0.5}
+			BX_CustomLifeChanges = {{{0,0.5}}, {{0, 0.5}}}
+			BX_DisplayedGraph = 'Life'
+		end"
+	/>
+	
+	<Actor
+		File="Sounds/ScStIn.ogg"
+		OnCommand="%function(self)
+			self:start()
+		end"
+	/>
+	
+	<Actor
+		File="Sounds/Dangerous.ogg"
+		OnCommand="%function(self)
+			if BXStage_IsDangerous == true then
+				self:start()
+			end
+		end"
+	/>
+
+	<Actor Type="ActorFrame" OnCommand="%function(self)
+		self:cmd('x,SCREEN_CENTER_X;y,SCREEN_CENTER_Y+120')
+		self:tween(.648,'outCirc(%f,0,1,1)')
+		self:y(SCREEN_CENTER_Y)
+	end"><children>
+		<Actor
+			File="itbg.png"
+			Frag="tint.frag"
+			InitCommand="ZoomToWidth,SCREEN_WIDTH;ZoomToHeight,SCREEN_HEIGHT;croptop,0.75;diffuse,0.35,0.35,0.35,1;glow,0,0,0,0.75"
+			OnCommand="%function(self)
+				if BX_LoadBackground ~= nil and BX_LoadBackground ~= '' then
+					self:Load(BX_LoadBackground)
+				end
+				
+				if BXStage_UseColor ~= nil and BXStage_UseColor ~= '' then
+					local c = BXStage_UseColor
+					self:GetShader():uniform3f('tint',c[1],c[2],c[3])
+				else
+					self:GetShader():uniform3f('tint',0,0,0)
+				end
+				self:zoomto(SCREEN_WIDTH,SCREEN_HEIGHT)
+			end"
+		/>
+		<Actor
+			Type="Quad"
+			InitCommand="ZoomToWidth,SCREEN_WIDTH;ZoomToHeight,SCREEN_HEIGHT;croptop,0.75;diffusealpha,0"
+			OnCommand="%function(self)
+				self:blend('add')
+				if BXStage_UseColor ~= nil and BXStage_UseColor ~= '' then
+					local c = BXStage_UseColor
+					self:diffuse(c[1]*.35,c[2]*.35,c[3]*.35,.5)
+				end
+			end"
+		/>
+	</children></Actor>
+	
+	<Actor Type="ActorFrame" OnCommand="%function(self)
+		self:cmd('x,SCREEN_CENTER_X;y,SCREEN_CENTER_Y-360')
+		self:tween(.648,'outCirc(%f,0,1,1)')
+		self:y(SCREEN_CENTER_Y)
+	end"><children>
+		<Actor
+			File="itbg.png"
+			Frag="tint.frag"
+			InitCommand="ZoomToWidth,SCREEN_WIDTH;ZoomToHeight,SCREEN_HEIGHT;cropbottom,0.25;diffuse,0.5,0.5,0.5,1;glow,0,0,0,0.35"
+			OnCommand="%function(self)
+				if BX_LoadBackground ~= nil and BX_LoadBackground ~= '' then
+					self:Load(BX_LoadBackground)
+				end
+				if BXStage_UseColor ~= nil and BXStage_UseColor ~= '' then
+					local c = BXStage_UseColor
+					self:GetShader():uniform3f('tint',c[1]*.5,c[2]*.5,c[3]*.5)
+				else
+					self:GetShader():uniform3f('tint',0,0,0)
+				end
+				self:zoomto(SCREEN_WIDTH,SCREEN_HEIGHT)
+			end"
+		/>
+		<Actor
+			Type="Quad"
+			InitCommand="ZoomToWidth,SCREEN_WIDTH;ZoomToHeight,SCREEN_HEIGHT;cropbottom,0.25;diffusealpha,0"
+			OnCommand="%function(self)
+				self:blend('add')
+				if BXStage_UseColor ~= nil and BXStage_UseColor ~= '' then
+					local c = BXStage_UseColor
+					self:diffuse(c[1]*.35,c[2]*.35,c[3]*.35,.25)
+				end
+			end"
+		/>
+	</children></Actor>
+	
+	
+	<Actor
+		Type="Quad"
+		InitCommand="x,SCREEN_CENTER_X;y,SCREEN_BOTTOM;ZoomToWidth,SCREEN_WIDTH;ZoomToHeight,8;diffuse,0.5,0.5,0.5,1;"
+		OnCommand="%function(self)
+		if BXStage_UseColor ~= nil and BXStage_UseColor ~= '' then
+			local c = BXStage_UseColor
+			self:diffuse(c[1],c[2],c[3],1)
+		end	
+		self:tween(.648,'outCirc(%f,0,1,1)')
+		self:y(SCREEN_CENTER_Y*1.5)
+		end"
+	/>
+	
+	<Actor
+		Font="_eurostile outline"
+		Text=""
+		Var="BX_Stage_Title"
+		OnCommand="%function(self)
+			local CurSong = GAMESTATE:GetCurrentSong()
+			local CurSteps = GAMESTATE:GetCurrentSteps(0)
+			self:settext(CurSong:GetDisplayMainTitle())
+			self:zoom(1.1)
+			self:xy(32,80+(SCREEN_CENTER_Y*.65))
+			self:wrapwidthpixels(640-64)
+			self:horizalign('left')
+			self:diffusealpha(1)
+			print('TITLE HEIGHT: '..self:GetHeight()..'')
+			
+			self:diffusealpha(0)
+			self:tween(.648,'outCirc(%f,0,1,1)')
+			self:diffusealpha(1)
+		end"
+	/>
+	
+	<Actor
+		Font="common normal"
+		Text=""
+		Var="BX_Stage_SubTitle"
+		OnCommand="%function(self)
+			local CurSong = GAMESTATE:GetCurrentSong()
+			local CurSteps = GAMESTATE:GetCurrentSteps(0)
+			self:settext(CurSong:GetDisplaySubTitle())
+			self:zoom(0.9)
+			self:xy(32,80+(SCREEN_CENTER_Y*.65)+(BX_Stage_Title:GetHeight()/1.5))
+			self:wrapwidthpixels(640-64)
+			self:horizalign('left')
+			self:diffusealpha(1)
+			
+			self:diffusealpha(0)
+			self:tween(.648,'outCirc(%f,0,1,1)')
+			self:diffusealpha(1)
+		end"
+	/>
+	
+	<Actor
+		Font="_eurostile outline"
+		Text=""
+		OnCommand="%function(self)
+			local CurSong = GAMESTATE:GetCurrentSong()
+			
+			--self:settext(CurSong:GetDisplayArtist())
+			self:settext('Music:\nStepArtist:')
+			self:zoom(1)
+			self:xy(32,80+SCREEN_CENTER_Y*1)
+			
+			self:horizalign('left')
+			
+			self:diffusealpha(0)
+			self:tween(.648,'outCirc(%f,0,1,1)')
+			self:diffusealpha(1)
+			--self:diffusealpha(1)
+		end"
+	
+	/>
+	
+	<Actor
+		Font="common normal"
+		Text=""
+		OnCommand="%function(self)
+			local CurSong = GAMESTATE:GetCurrentSong()
+			
+			--self:settext(CurSong:GetDisplayArtist())
+			self:settext(''..CurSong:GetDisplayArtist()..'\n'..GAMESTATE:GetCurrentSteps(0):GetDescription()..'')
+			self:zoom(0.9)
+			self:xy(SCREEN_CENTER_X*.65,80+SCREEN_CENTER_Y*0.95)
+			
+			self:horizalign('left')
+			
+			self:diffusealpha(0)
+			self:tween(.648,'outCirc(%f,0,1,1)')
+			self:diffusealpha(1)
+		end"
+	
+	/>
+	
+	<Actor
+		Type="Quad"
+		Text=""
+		OnCommand="%function(self)
+			local CurSong = GAMESTATE:GetCurrentSong()
+			
+			local BannerLoad = CurSong:GetBannerPath() or nil
+			
+			if BannerLoad then
+				self:hidden(0)
+				self:Load(BannerLoad)
+			else
+				self:hidden(1)
+			end
+			self:xy((418/2)+32,SCREEN_CENTER_Y*.45)
+			self:zoomto(418*1.5,164*1.5)
+			self:diffusealpha(0)
+			self:tween(.648,'outCirc(%f,0,1,1)')
+			self:diffusealpha(1)
+			self:zoomto(418,164)
+			--self:diffusealpha(1)
+		end"
+	
+	/>
+	
+	<Actor
+		Font="_eurostile outline"
+		Text=""
+		Var="BX_TipSpeaker"
+		OnCommand="%function(self)
+			self:zoom(1)
+			self:wrapwidthpixels((640-64)*1.25)
+			self:xy(32,SCREEN_CENTER_Y*1.6)
+			self:horizalign('left')
+			self:settext(BX_LoadTipSpeaker)
+			if BXStage_UseColor ~= nil and BXStage_UseColor ~= '' then
+				local c = BXStage_UseColor
+				self:diffuse(c[1],c[2],c[3],0)
+			end			
+			self:diffusealpha(0)
+			self:tween(.648,'outCirc(%f,0,1,1)')
+			self:diffusealpha(1)
+			
+		end"
+	
+	/>
+	
+	<Actor
+		Font="Common Normal"
+		Text=""
+		Var="BX_TipString"
+		OnCommand="%function(self)
+			self:zoom(0.75)
+			self:wrapwidthpixels((640-64)*1.25)
+			self:xy(32,SCREEN_CENTER_Y*1.75)
+			self:horizalign('left')
+			self:settext(BX_LoadTipString)
+
+			self:diffusealpha(0)
+			self:tween(.648,'outCirc(%f,0,1,1)')
+			self:diffusealpha(1)
+			print('BX_StageScreen_Played = '..tostring(BX_StageScreen_Played)..'')
+		end"
+	
+	/>
+	
+	<Actor
+		Condition="GAMESTATE:IsCourseMode()"
+		File="../../Graphics/ScreenGameplay course song 1"
+		OnCommand="x,SCREEN_CENTER_X;y,SCREEN_CENTER_Y;diffusealpha,0;accelerate,0.3;diffusealpha,1"
+	/>
+	
+</children></ActorFrame>

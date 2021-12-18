@@ -1,0 +1,247 @@
+<ActorFrame><children>
+	<ActorFrame Condition="BX_StageScreen_Played == false"><children>
+	<Actor File="easing.xml" />
+	
+	<Actor Type="ActorFrame" OnCommand="%function(self)
+		BX_StageScreen_Played = true
+		self:cmd('x,SCREEN_CENTER_X;y,SCREEN_CENTER_Y')
+		self:tween(.983,'inCirc(%f,0,1,1)')
+		self:addy(120)
+	end"><children>
+		<Actor
+			File="itbg.png"
+			Frag="tint.frag"
+			InitCommand="ZoomToWidth,SCREEN_WIDTH;ZoomToHeight,SCREEN_HEIGHT;croptop,0.75;diffuse,0.35,0.35,0.35,1;glow,0,0,0,0.75"
+			OnCommand="%function(self)
+				if BX_LoadBackground ~= nil and BX_LoadBackground ~= '' then
+					self:Load(BX_LoadBackground)
+				end
+				
+				if BXStage_UseColor ~= nil and BXStage_UseColor ~= '' then
+					local c = BXStage_UseColor
+					self:GetShader():uniform3f('tint',c[1],c[2],c[3])
+				else
+					self:GetShader():uniform3f('tint',0,0,0)
+				end
+				self:zoomto(SCREEN_WIDTH,SCREEN_HEIGHT)
+			end"
+		/>
+		<Actor
+			Type="Quad"
+			InitCommand="ZoomToWidth,SCREEN_WIDTH;ZoomToHeight,SCREEN_HEIGHT;croptop,0.75;diffusealpha,0"
+			OnCommand="%function(self)
+				self:blend('add')
+				if BXStage_UseColor ~= nil and BXStage_UseColor ~= '' then
+					local c = BXStage_UseColor
+					self:diffuse(c[1]*.35,c[2]*.35,c[3]*.35,.5)
+				end
+			end"
+		/>
+	</children></Actor>
+	
+	<Actor Type="ActorFrame" OnCommand="%function(self)
+		self:cmd('x,SCREEN_CENTER_X;y,SCREEN_CENTER_Y')
+		self:tween(.983,'inCirc(%f,0,1,1)')
+		self:addy(-360)
+	end"><children>
+		<Actor
+			File="itbg.png"
+			Frag="tint.frag"
+			InitCommand="ZoomToWidth,SCREEN_WIDTH;ZoomToHeight,SCREEN_HEIGHT;cropbottom,0.25;diffuse,0.5,0.5,0.5,1;glow,0,0,0,0.35"
+			OnCommand="%function(self)
+				if BX_LoadBackground ~= nil and BX_LoadBackground ~= '' then
+					self:Load(BX_LoadBackground)
+				end
+				if BXStage_UseColor ~= nil and BXStage_UseColor ~= '' then
+					local c = BXStage_UseColor
+					self:GetShader():uniform3f('tint',c[1]*.5,c[2]*.5,c[3]*.5)
+				else
+					self:GetShader():uniform3f('tint',0,0,0)
+				end
+				self:zoomto(SCREEN_WIDTH,SCREEN_HEIGHT)
+			end"
+		/>
+		<Actor
+			Type="Quad"
+			InitCommand="ZoomToWidth,SCREEN_WIDTH;ZoomToHeight,SCREEN_HEIGHT;cropbottom,0.25;diffusealpha,0"
+			OnCommand="%function(self)
+				self:blend('add')
+				if BXStage_UseColor ~= nil and BXStage_UseColor ~= '' then
+					local c = BXStage_UseColor
+					self:diffuse(c[1]*.35,c[2]*.35,c[3]*.35,.25)
+				end
+			end"
+		/>
+	</children></Actor>
+	
+	<Actor
+		Type="Quad"
+		InitCommand="x,SCREEN_CENTER_X;y,SCREEN_CENTER_Y*1.5;ZoomToWidth,SCREEN_WIDTH;ZoomToHeight,8;diffuse,0.5,0.5,0.5,1;"
+		OnCommand="%function(self)
+		if BXStage_UseColor ~= nil and BXStage_UseColor ~= '' then
+			local c = BXStage_UseColor
+			self:diffuse(c[1],c[2],c[3],1)
+		end	
+		self:tween(.983,'inCirc(%f,0,1,1)')
+		self:addy(120)
+		end"
+	/>
+	
+	
+	<Actor
+		Font="_eurostile outline"
+		Text=""
+		Var="BX_Stage_Title"
+		OnCommand="%function(self)
+			local CurSong = GAMESTATE:GetCurrentSong()
+			local CurSteps = GAMESTATE:GetCurrentSteps(0)
+			self:settext(CurSong:GetDisplayMainTitle())
+			self:zoom(1.1)
+			self:xy(32,80+(SCREEN_CENTER_Y*.65))
+			self:wrapwidthpixels(640-64)
+			self:horizalign('left')
+			self:diffusealpha(1)
+			print('TITLE HEIGHT: '..self:GetHeight()..'')
+			
+			self:diffusealpha(1)
+			self:tween(.983,'inCirc(%f,0,1,1)')
+			self:diffusealpha(0)
+		end"
+	/>
+	
+	<Actor
+		Font="common normal"
+		Text=""
+		Var="BX_Stage_SubTitle"
+		OnCommand="%function(self)
+			local CurSong = GAMESTATE:GetCurrentSong()
+			local CurSteps = GAMESTATE:GetCurrentSteps(0)
+			self:settext(CurSong:GetDisplaySubTitle())
+			self:zoom(0.9)
+			self:xy(32,80+(SCREEN_CENTER_Y*.65)+(BX_Stage_Title:GetHeight()/1.5))
+			self:wrapwidthpixels(640-64)
+			self:horizalign('left')
+			
+			self:diffusealpha(1)
+			self:tween(.983,'inCirc(%f,0,1,1)')
+			self:diffusealpha(0)
+		end"
+	/>
+	
+	<Actor
+		Font="_eurostile outline"
+		Text=""
+		OnCommand="%function(self)
+			local CurSong = GAMESTATE:GetCurrentSong()
+			self:settext('Music:\nStepArtist:')
+			self:zoom(1)
+			self:xy(32,80+SCREEN_CENTER_Y*1)
+			self:horizalign('left')
+			self:diffusealpha(1)
+			self:tween(.983,'inCirc(%f,0,1,1)')
+			self:diffusealpha(0)
+			--self:diffusealpha(1)
+		end"
+	
+	/>
+	
+	<Actor
+		Font="common normal"
+		Text=""
+		OnCommand="%function(self)
+			local CurSong = GAMESTATE:GetCurrentSong()
+			self:settext(''..CurSong:GetDisplayArtist()..'\n'..GAMESTATE:GetCurrentSteps(0):GetDescription()..'')
+			self:zoom(0.9)
+			self:xy(SCREEN_CENTER_X*.65,80+SCREEN_CENTER_Y*0.95)
+			
+			self:horizalign('left')
+			
+			self:diffusealpha(1)
+			self:tween(.983,'inCirc(%f,0,1,1)')
+			self:diffusealpha(0)
+			--self:diffusealpha(1)
+		end"
+	
+	/>
+	
+	<Actor
+		Type="Quad"
+		Text=""
+		OnCommand="%function(self)
+			local CurSong = GAMESTATE:GetCurrentSong()
+			
+			local BannerLoad = CurSong:GetBannerPath() or nil
+
+			if BannerLoad then
+				self:Load(BannerLoad)
+			end
+			self:xy((418/2)+32,SCREEN_CENTER_Y*.45)
+			self:zoomto(418,164)
+			self:diffusealpha(1)
+			self:tween(.863,'inCirc(%f,0,1,1)')
+			self:diffusealpha(0)
+			self:zoomto(418*2,164*2)
+		end"
+	
+	/>
+	
+		<Actor
+		Font="_eurostile outline"
+		Text=""
+		Var="BX_TipSpeaker"
+		OnCommand="%function(self)
+			--self:settext(GAMESTATE:GetCurrentSong():GetDisplayMainTitle())
+			self:zoom(1)
+			self:wrapwidthpixels((640-64)*1.25)
+			self:xy(32,SCREEN_CENTER_Y*1.6)
+			self:horizalign('left')
+			self:settext(BX_LoadTipSpeaker)
+			if BXStage_UseColor ~= nil and BXStage_UseColor ~= '' then
+				local c = BXStage_UseColor
+				self:diffuse(c[1],c[2],c[3],1)
+			end	
+			self:diffusealpha(1)
+			self:tween(.863,'inCirc(%f,0,1,1)')
+			self:diffusealpha(0)
+			
+			--self:settext(GAMESTATE:GetCurrentSong():GetDisplayMainTitle())
+		end"
+	
+	/>
+	
+	<Actor
+		Font="Common Normal"
+		Text=""
+		Var="BX_TipString"
+		OnCommand="%function(self)
+			--self:settext(GAMESTATE:GetCurrentSong():GetDisplayMainTitle())
+			self:zoom(0.75)
+			self:wrapwidthpixels((640-64)*1.25)
+			self:xy(32,SCREEN_CENTER_Y*1.75)
+			self:horizalign('left')
+			self:settext(BX_LoadTipString)
+
+			self:diffusealpha(1)
+			self:tween(.863,'inCirc(%f,0,1,1)')
+			self:diffusealpha(0)
+			
+			--self:settext(GAMESTATE:GetCurrentSong():GetDisplayMainTitle())
+		end"
+	
+	/>
+
+	
+	<Actor
+		File="Sounds/ScStOut.ogg"
+		OnCommand="%function(self)
+			self:sleep(0.02)
+			self:queuecommand('PlaySound')
+		end"
+		PlaySoundCommand="%function(self)
+			self:start()
+			print('SOUND PLAYED')
+			self:sleep(1)
+		end"
+	/>
+	</children></ActorFrame>
+</children></ActorFrame>
